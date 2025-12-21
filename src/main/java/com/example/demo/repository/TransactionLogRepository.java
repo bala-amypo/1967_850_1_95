@@ -1,7 +1,10 @@
-
 package com.example.demo.repository;
 
 import com.example.demo.model.TransactionLog;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface TransactionRepository extends JpaRepository<TransactionLog, Long> {}
+@Repository
+public interface TransactionLogRepository
+        extends JpaRepository<TransactionLog, Long> {
+}
