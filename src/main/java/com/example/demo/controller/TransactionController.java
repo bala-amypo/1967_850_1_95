@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/transactions")
+@RequestMapping("/api/transactions")
 public class TransactionController {
 
     private final TransactionService transactionService;
@@ -16,15 +16,18 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @PostMapping("/{userId}")
-    public TransactionLog addTransaction(
-            @PathVariable Long userId,
-            @RequestBody TransactionLog log) {
-        return transactionService.addTransaction(userId, log);
+    @PostMapping
+    public TransactionLog createTransaction(@RequestBody TransactionLog transaction) {
+        return transactionService.createTransaction(transaction);
     }
 
-    @GetMapping("/user/{userId}")
-    public List<TransactionLog> getUserTransactions(@PathVariable Long userId) {
-        return transactionService.getUserTransactions(userId);
+    @GetMapping
+    public List<TransactionLog> getAllTransactions() {
+        return transactionService.getAllTransactions();
+    }
+
+    @GetMapping("/{id}")
+    public TransactionLog getTransaction(@PathVariable Long id) {
+        return transactionService.getTransactionById(id);
     }
 }
