@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
-import java.time.LocalDateTime;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class BudgetSummary {
@@ -16,14 +16,13 @@ public class BudgetSummary {
     private Double totalIncome;
     private Double totalExpenses;
     private String status;
+
     private LocalDateTime generatedAt;
 
     @PrePersist
     public void onCreate() {
         generatedAt = LocalDateTime.now();
     }
-
-    public BudgetSummary() {}
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
