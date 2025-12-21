@@ -1,6 +1,5 @@
 package com.example.demo.model;
 
-import com.example.demo.exception.BadRequestException;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
@@ -12,36 +11,64 @@ public class TransactionLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private User user;
-
-    @ManyToOne
-    private Category category;
-
     private Double amount;
     private String description;
     private LocalDate transactionDate;
 
-    public TransactionLog() {}
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    public TransactionLog(Long id, User user, Category category,
-                          Double amount, String description, LocalDate transactionDate) {
-        this.id = id;
-        this.user = user;
-        this.category = category;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    // ===== Constructors =====
+    public TransactionLog() {
+    }
+
+    // ===== Getters & Setters =====
+    public Long getId() {
+        return id;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocalDate getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(LocalDate transactionDate) {
         this.transactionDate = transactionDate;
     }
 
-    public void validate() {
-        if (amount == null || amount <= 0) {
-            throw new BadRequestException("Amount must be greater than zero");
-        }
-        if (transactionDate.isAfter(LocalDate.now())) {
-            throw new BadRequestException("Transaction date cannot be in the future");
-        }
+    public Category getCategory() {
+        return category;
     }
 
-    // getters & setters
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
