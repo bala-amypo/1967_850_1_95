@@ -17,12 +17,12 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Category create(@RequestBody Category c) {
-        return service.addCategory(c);
+    public Category create(@RequestBody Category category) {
+        return service.addCategory(category);
     }
 
     @GetMapping
-    public List<Category> list() {
+    public List<Category> getAll() {
         return service.getAllCategories();
     }
 }
