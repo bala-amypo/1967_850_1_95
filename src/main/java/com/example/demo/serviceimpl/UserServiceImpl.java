@@ -4,37 +4,40 @@ import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder) {
+    // ✅ Constructor injection ONLY
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public User register(User user) {
+
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new BadRequestException("Email already exists");
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // ✅ NO password encoding (security excluded)
         if (user.getRole() == null) {
             user.setRole("USER");
         }
+
         return userRepository.save(user);
     }
 
     @Override
     public User findByEmail(String email) {
-        return userRepository.findAll()
+        Optional<User> user = userRepository.findAll()
                 .stream()
                 .filter(u -> u.getEmail().equals(email))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
+
+        return user.orElse(null);
     }
 }
