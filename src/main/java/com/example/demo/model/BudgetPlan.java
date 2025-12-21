@@ -1,8 +1,14 @@
 package com.example.demo.model;
 
+import com.example.demo.exception.BadRequestException;
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Table(name = "budget_plans")
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class BudgetPlan {
 
     @Id
@@ -18,21 +24,15 @@ public class BudgetPlan {
     private Double incomeTarget;
     private Double expenseLimit;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @OneToOne(mappedBy = "budgetPlan")
+    private BudgetSummary budgetSummary;
 
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
-
-    public Integer getMonth() { return month; }
-    public void setMonth(Integer month) { this.month = month; }
-
-    public Integer getYear() { return year; }
-    public void setYear(Integer year) { this.year = year; }
-
-    public Double getIncomeTarget() { return incomeTarget; }
-    public void setIncomeTarget(Double incomeTarget) { this.incomeTarget = incomeTarget; }
-
-    public Double getExpenseLimit() { return expenseLimit; }
-    public void setExpenseLimit(Double expenseLimit) { this.expenseLimit = expenseLimit; }
+    public void validate() {
+        if (month < 1 || month > 12) {
+            throw new BadRequestException("Month must be between 1 and 12");
+        }
+        if (incomeTarget < 0 || expenseLimit < 0) {
+            throw new BadRequestException("Amounts must be >= 0");
+        }
+    }
 }
