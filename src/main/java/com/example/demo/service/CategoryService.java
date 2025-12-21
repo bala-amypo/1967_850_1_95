@@ -1,25 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Category;
-import com.example.demo.repository.CategoryRepository;
-import org.springframework.stereotype.Service;
-
+import com.example.demo.entity.Category;
 import java.util.List;
 
-@Service
-public class CategoryService {
-
-    private final CategoryRepository repo;
-
-    public CategoryService(CategoryRepository repo) {
-        this.repo = repo;
-    }
-
-    public Category addCategory(Category c) {
-        return repo.save(c);
-    }
-
-    public List<Category> getAllCategories() {
-        return repo.findAll();
-    }
+public interface CategoryService {
+    List<Category> findAll();
+    Category create(Category category);
 }
