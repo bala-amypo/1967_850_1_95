@@ -1,9 +1,16 @@
+
 package com.example.demo.dto;
 
-public class AuthResponse {
-    public String message;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-    public AuthResponse(String message) {
-        this.message = message;
-    }
+@Getter
+@Setter
+@AllArgsConstructor
+public class AuthResponse {
+    private Long userId;
+    private String email;
+    private String role;
+    private String message;
 }
