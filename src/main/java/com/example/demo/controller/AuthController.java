@@ -10,24 +10,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserService service;
+    private final UserService userService;
 
-    public AuthController(UserService service) {
-        this.service = service;
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/register")
-    public AuthResponse register(@RequestBody RegisterRequest req) {
-        User u = new User();
-        u.setName(req.name);
-        u.setEmail(req.email);
-        u.setPassword(req.password);
-        service.register(u);
-        return new AuthResponse("User registered");
-    }
+    public AuthResponse register(@RequestBody RegisterRequest request) {
 
-    @PostMapping("/login")
-    public AuthResponse login() {
-        return new AuthResponse("Login successful (security disabled)");
+        User user = new User();
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+
+        User savedUser = userService.register(user);
+
+        return new AuthResponse(
+                savedUser.getId(),
+                savedUser.getEmail(),
+                savedUser.getRole(),
+                "User registered successfully"
+        );
     }
 }
