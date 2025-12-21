@@ -1,9 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Category;
+import com.example.demo.model.*;
 import java.util.List;
-
 public interface CategoryService {
-    List<Category> findAll();
-    Category create(Category category);
+    Category addCategory(Category category);
+    List<Category> getAllCategories();
 }

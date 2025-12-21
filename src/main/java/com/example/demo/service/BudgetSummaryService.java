@@ -1,7 +1,4 @@
 package com.example.demo.service;
 
-import java.math.BigDecimal;
-
-public interface BudgetSummaryService {
-    BigDecimal getTotalExpense();
-}
+import com.example.demo.model.*;
+import java.util.List;
