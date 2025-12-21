@@ -1,28 +1,27 @@
-package com.example.demo.service.impl;
-
-import com.example.demo.entity.Transaction;
-import com.example.demo.repository.TransactionRepository;
-import com.example.demo.service.TransactionService;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
-    private final TransactionRepository repository;
+    private final TransactionLogRepository logRepo;
+    private final UserRepository userRepo;
 
-    public TransactionServiceImpl(TransactionRepository repository) {
-        this.repository = repository;
+    public TransactionServiceImpl(TransactionLogRepository logRepo, UserRepository userRepo) {
+        this.logRepo = logRepo;
+        this.userRepo = userRepo;
     }
 
     @Override
-    public List<Transaction> findAll() {
-        return repository.findAll();
+    public TransactionLog addTransaction(Long userId, TransactionLog log) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new BadRequestException("User not found"));
+        log.setUser(user);
+        log.validate();
+        return logRepo.save(log);
     }
 
     @Override
-    public Transaction create(Transaction transaction) {
-        return repository.save(transaction);
+    public List<TransactionLog> getUserTransactions(Long userId) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new BadRequestException("User not found"));
+        return logRepo.findByUser(user);
     }
 }
