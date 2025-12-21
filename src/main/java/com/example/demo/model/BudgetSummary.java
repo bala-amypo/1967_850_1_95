@@ -1,10 +1,19 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "budget_summaries")
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class BudgetSummary {
+
+    public static final String STATUS_UNDER_LIMIT = "UNDER_LIMIT";
+    public static final String STATUS_OVER_LIMIT = "OVER_LIMIT";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,30 +23,13 @@ public class BudgetSummary {
     private BudgetPlan budgetPlan;
 
     private Double totalIncome;
-    private Double totalExpenses;
+    private Double totalExpense;
     private String status;
 
     private LocalDateTime generatedAt;
 
     @PrePersist
     public void onCreate() {
-        generatedAt = LocalDateTime.now();
+        this.generatedAt = LocalDateTime.now();
     }
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public BudgetPlan getBudgetPlan() { return budgetPlan; }
-    public void setBudgetPlan(BudgetPlan budgetPlan) { this.budgetPlan = budgetPlan; }
-
-    public Double getTotalIncome() { return totalIncome; }
-    public void setTotalIncome(Double totalIncome) { this.totalIncome = totalIncome; }
-
-    public Double getTotalExpenses() { return totalExpenses; }
-    public void setTotalExpenses(Double totalExpenses) { this.totalExpenses = totalExpenses; }
-
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
-    public LocalDateTime getGeneratedAt() { return generatedAt; }
 }
