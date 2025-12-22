@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Category;
 import com.example.demo.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,5 +17,11 @@ public class CategoryController {
     @GetMapping
     public Object getAll() {
         return service.getAll();
+    }
+
+    // ✅ POST create category
+    @PostMapping
+    public Category create(@RequestBody Category category) {
+        return service.create(category);
     }
 }
