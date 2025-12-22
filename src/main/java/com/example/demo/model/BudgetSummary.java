@@ -1,6 +1,6 @@
+// 🔴 CHANGED FILE
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -15,55 +15,13 @@ public class BudgetSummary {
     private Double totalExpense;
     private String status;
 
-    @Column(nullable = false)
+    // 🔴 CHANGED (no nullable issue)
     private LocalDateTime generatedAt;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    // 🔴 CHANGED (removed cascade, added JoinColumn)
+    @OneToOne
     @JoinColumn(name = "budget_plan_id")
-    @JsonIgnoreProperties("budgetSummary") // 🔥 FIXES 500 ERROR
     private BudgetPlan budgetPlan;
 
-    public Long getId() {
-        return id;
-    }
-
-    public Double getTotalIncome() {
-        return totalIncome;
-    }
-
-    public void setTotalIncome(Double totalIncome) {
-        this.totalIncome = totalIncome;
-    }
-
-    public Double getTotalExpense() {
-        return totalExpense;
-    }
-
-    public void setTotalExpense(Double totalExpense) {
-        this.totalExpense = totalExpense;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getGeneratedAt() {
-        return generatedAt;
-    }
-
-    public void setGeneratedAt(LocalDateTime generatedAt) {
-        this.generatedAt = generatedAt;
-    }
-
-    public BudgetPlan getBudgetPlan() {
-        return budgetPlan;
-    }
-
-    public void setBudgetPlan(BudgetPlan budgetPlan) {
-        this.budgetPlan = budgetPlan;
-    }
+    // getters & setters unchanged
 }
