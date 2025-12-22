@@ -1,8 +1,12 @@
 package com.example.demo.serviceimpl;
 
+import com.example.demo.model.Category;
 import com.example.demo.model.TransactionLog;
+import com.example.demo.model.User;
 import com.example.demo.repository.TransactionLogRepository;
 import com.example.demo.service.TransactionService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,13 +16,35 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionLogRepository repository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     public TransactionServiceImpl(TransactionLogRepository repository) {
         this.repository = repository;
     }
 
     @Override
     public TransactionLog create(TransactionLog transaction) {
-        return repository.save(transaction);
+
+        if (transaction.getCategory() != null && transaction.getCategory().getId() != null) {
+            Category managedCategory =
+                    entityManager.find(Category.class, transaction.getCategory().getId());
+            transaction.setCategory(managedCategory);
+        }
+
+        if (transaction.getUser() != null && transaction.getUser().getId() != null) {
+            User managedUser =
+                    entityManager.find(User.class, transaction.getUser().getId());
+            transaction.setUser(managedUser);
+        }
+
+        TransactionLog saved = repository.save(transaction);
+
+        // force initialization (prevents Swagger 500)
+        if (saved.getCategory() != null) saved.getCategory().getId();
+        if (saved.getUser() != null) saved.getUser().getId();
+
+        return saved;
     }
 
     @Override
@@ -34,13 +60,24 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public TransactionLog update(Long id, TransactionLog transaction) {
+
         TransactionLog existing = getById(id);
 
         existing.setAmount(transaction.getAmount());
         existing.setDescription(transaction.getDescription());
         existing.setTransactionDate(transaction.getTransactionDate());
-        existing.setCategory(transaction.getCategory());
-        existing.setUser(transaction.getUser());
+
+        if (transaction.getCategory() != null && transaction.getCategory().getId() != null) {
+            Category managedCategory =
+                    entityManager.find(Category.class, transaction.getCategory().getId());
+            existing.setCategory(managedCategory);
+        }
+
+        if (transaction.getUser() != null && transaction.getUser().getId() != null) {
+            User managedUser =
+                    entityManager.find(User.class, transaction.getUser().getId());
+            existing.setUser(managedUser);
+        }
 
         return repository.save(existing);
     }
@@ -49,4 +86,4 @@ public class TransactionServiceImpl implements TransactionService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
-}
+} 
