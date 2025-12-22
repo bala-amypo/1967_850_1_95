@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -19,9 +20,8 @@ public class BudgetSummary {
 
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "budget_plan_id")
+    @JsonIgnoreProperties("budgetSummary") // 🔥 FIXES 500 ERROR
     private BudgetPlan budgetPlan;
-
-    // ✅ Getters & Setters
 
     public Long getId() {
         return id;
