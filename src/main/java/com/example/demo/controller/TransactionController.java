@@ -14,15 +14,21 @@ public class TransactionController {
         this.service = service;
     }
 
-    // ✅ GET all transactions
     @GetMapping
     public Object getAll() {
         return service.getAll();
     }
 
-    // ✅ POST create transaction
     @PostMapping
     public TransactionLog create(@RequestBody TransactionLog transaction) {
         return service.create(transaction);
+    }
+
+    // ✅ PUT update transaction
+    @PutMapping("/{id}")
+    public TransactionLog update(
+            @PathVariable Long id,
+            @RequestBody TransactionLog transaction) {
+        return service.update(id, transaction);
     }
 }
