@@ -7,6 +7,8 @@ public interface BudgetSummaryService {
 
     List<?> getAll();
 
-    // ✅ ADD
     BudgetSummary create(BudgetSummary summary);
+
+    // ✅ ADD
+    BudgetSummary update(Long id, BudgetSummary summary);
 }
