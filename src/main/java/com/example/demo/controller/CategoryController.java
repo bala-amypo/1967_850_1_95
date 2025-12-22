@@ -19,9 +19,16 @@ public class CategoryController {
         return service.getAll();
     }
 
-    // ✅ POST create category
     @PostMapping
     public Category create(@RequestBody Category category) {
         return service.create(category);
+    }
+
+    // ✅ PUT update category
+    @PutMapping("/{id}")
+    public Category update(
+            @PathVariable Long id,
+            @RequestBody Category category) {
+        return service.update(id, category);
     }
 }
