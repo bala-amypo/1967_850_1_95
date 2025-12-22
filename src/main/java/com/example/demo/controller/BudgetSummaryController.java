@@ -24,7 +24,6 @@ public class BudgetSummaryController {
         return service.create(summary);
     }
 
-    // ✅ PUT update budget summary
     @PutMapping("/{id}")
     public BudgetSummary update(
             @PathVariable Long id,
