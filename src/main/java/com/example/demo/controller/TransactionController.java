@@ -24,7 +24,6 @@ public class TransactionController {
         return service.create(transaction);
     }
 
-    // ✅ PUT update transaction
     @PutMapping("/{id}")
     public TransactionLog update(
             @PathVariable Long id,
