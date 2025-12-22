@@ -9,6 +9,5 @@ public interface BudgetSummaryService {
 
     BudgetSummary create(BudgetSummary summary);
 
-    // ✅ ADD
     BudgetSummary update(Long id, BudgetSummary summary);
 }
