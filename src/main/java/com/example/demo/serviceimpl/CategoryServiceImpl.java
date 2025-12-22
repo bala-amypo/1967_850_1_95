@@ -21,9 +21,20 @@ public class CategoryServiceImpl implements CategoryService {
         return repo.findAll();
     }
 
-    // ✅ ADD
     @Override
     public Category create(Category category) {
         return repo.save(category);
+    }
+
+    // ✅ PUT
+    @Override
+    public Category update(Long id, Category category) {
+        Category existing = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        existing.setName(category.getName());
+        existing.setType(category.getType());
+
+        return repo.save(existing);
     }
 }
