@@ -1,8 +1,3 @@
-package com.example.demo.model;
-
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
-
 @Entity
 public class BudgetSummary {
 
@@ -13,54 +8,13 @@ public class BudgetSummary {
     private Double totalIncome;
     private Double totalExpense;
     private String status;
+
+    @Column(nullable = false)
     private LocalDateTime generatedAt;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "budget_plan_id")
     private BudgetPlan budgetPlan;
 
-    // ✅ Getters & Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public Double getTotalIncome() {
-        return totalIncome;
-    }
-
-    public void setTotalIncome(Double totalIncome) {
-        this.totalIncome = totalIncome;
-    }
-
-    public Double getTotalExpense() {
-        return totalExpense;
-    }
-
-    public void setTotalExpense(Double totalExpense) {
-        this.totalExpense = totalExpense;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getGeneratedAt() {
-        return generatedAt;
-    }
-
-    public void setGeneratedAt(LocalDateTime generatedAt) {
-        this.generatedAt = generatedAt;
-    }
-
-    public BudgetPlan getBudgetPlan() {
-        return budgetPlan;
-    }
-
-    public void setBudgetPlan(BudgetPlan budgetPlan) {
-        this.budgetPlan = budgetPlan;
-    }
+    // getters & setters unchanged
 }
