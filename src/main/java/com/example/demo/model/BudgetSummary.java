@@ -1,4 +1,3 @@
-// 🔴 CHANGED FILE
 package com.example.demo.model;
 
 import jakarta.persistence.*;
@@ -15,13 +14,55 @@ public class BudgetSummary {
     private Double totalExpense;
     private String status;
 
-    // 🔴 CHANGED (no nullable issue)
     private LocalDateTime generatedAt;
 
-    // 🔴 CHANGED (removed cascade, added JoinColumn)
     @OneToOne
     @JoinColumn(name = "budget_plan_id")
     private BudgetPlan budgetPlan;
 
-    // getters & setters unchanged
+    // 🔴 ADD THESE METHODS (THIS IS WHAT WAS MISSING)
+
+    public Long getId() {
+        return id;
+    }
+
+    public Double getTotalIncome() {
+        return totalIncome;
+    }
+
+    public void setTotalIncome(Double totalIncome) {
+        this.totalIncome = totalIncome;
+    }
+
+    public Double getTotalExpense() {
+        return totalExpense;
+    }
+
+    public void setTotalExpense(Double totalExpense) {
+        this.totalExpense = totalExpense;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getGeneratedAt() {
+        return generatedAt;
+    }
+
+    public void setGeneratedAt(LocalDateTime generatedAt) {
+        this.generatedAt = generatedAt;
+    }
+
+    public BudgetPlan getBudgetPlan() {
+        return budgetPlan;
+    }
+
+    public void setBudgetPlan(BudgetPlan budgetPlan) {
+        this.budgetPlan = budgetPlan;
+    }
 }
