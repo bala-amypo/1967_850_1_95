@@ -7,6 +7,8 @@ public interface CategoryService {
 
     List<?> getAll();
 
-    // ✅ ADD
     Category create(Category category);
+
+    // ✅ ADD
+    Category update(Long id, Category category);
 }
