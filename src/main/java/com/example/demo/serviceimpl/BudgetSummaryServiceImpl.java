@@ -28,12 +28,11 @@ public class BudgetSummaryServiceImpl implements BudgetSummaryService {
         return repo.save(summary);
     }
 
-    // ✅ ADD
     @Override
     public BudgetSummary update(Long id, BudgetSummary summary) {
 
         BudgetSummary existing = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("BudgetSummary not found"));
+                .orElseThrow(() -> new RuntimeException("BudgetSummary ID " + id + " not found"));
 
         existing.setTotalIncome(summary.getTotalIncome());
         existing.setTotalExpense(summary.getTotalExpense());
