@@ -19,9 +19,16 @@ public class BudgetSummaryController {
         return service.getAll();
     }
 
-    // ✅ POST create budget summary
     @PostMapping
     public BudgetSummary create(@RequestBody BudgetSummary summary) {
         return service.create(summary);
+    }
+
+    // ✅ PUT update budget summary
+    @PutMapping("/{id}")
+    public BudgetSummary update(
+            @PathVariable Long id,
+            @RequestBody BudgetSummary summary) {
+        return service.update(id, summary);
     }
 }
