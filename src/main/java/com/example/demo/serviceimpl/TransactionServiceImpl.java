@@ -23,6 +23,7 @@ public class TransactionServiceImpl implements TransactionService {
         this.repository = repository;
     }
 
+    // ✅ POST — UNCHANGED
     @Override
     public TransactionLog create(TransactionLog transaction) {
 
@@ -40,13 +41,14 @@ public class TransactionServiceImpl implements TransactionService {
 
         TransactionLog saved = repository.save(transaction);
 
-        // force initialization (prevents Swagger 500)
+        // prevent lazy init issues
         if (saved.getCategory() != null) saved.getCategory().getId();
         if (saved.getUser() != null) saved.getUser().getId();
 
         return saved;
     }
 
+    // ✅ GET — UNCHANGED
     @Override
     public List<TransactionLog> getAll() {
         return repository.findAll();
@@ -58,6 +60,7 @@ public class TransactionServiceImpl implements TransactionService {
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
     }
 
+    // 🔴 PUT — FIXED (NULL-SAFE MANAGED ENTITIES)
     @Override
     public TransactionLog update(Long id, TransactionLog transaction) {
 
@@ -70,13 +73,17 @@ public class TransactionServiceImpl implements TransactionService {
         if (transaction.getCategory() != null && transaction.getCategory().getId() != null) {
             Category managedCategory =
                     entityManager.find(Category.class, transaction.getCategory().getId());
-            existing.setCategory(managedCategory);
+            if (managedCategory != null) { // 🔥 FIX
+                existing.setCategory(managedCategory);
+            }
         }
 
         if (transaction.getUser() != null && transaction.getUser().getId() != null) {
             User managedUser =
                     entityManager.find(User.class, transaction.getUser().getId());
-            existing.setUser(managedUser);
+            if (managedUser != null) { // 🔥 FIX
+                existing.setUser(managedUser);
+            }
         }
 
         return repository.save(existing);
@@ -86,4 +93,4 @@ public class TransactionServiceImpl implements TransactionService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
-} 
+}
