@@ -22,10 +22,25 @@ public class BudgetSummaryServiceImpl implements BudgetSummaryService {
         return repo.findAll();
     }
 
-    // ✅ ADD
     @Override
     public BudgetSummary create(BudgetSummary summary) {
         summary.setGeneratedAt(LocalDateTime.now());
         return repo.save(summary);
+    }
+
+    // ✅ ADD
+    @Override
+    public BudgetSummary update(Long id, BudgetSummary summary) {
+
+        BudgetSummary existing = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("BudgetSummary not found"));
+
+        existing.setTotalIncome(summary.getTotalIncome());
+        existing.setTotalExpense(summary.getTotalExpense());
+        existing.setStatus(summary.getStatus());
+        existing.setBudgetPlan(summary.getBudgetPlan());
+        existing.setGeneratedAt(LocalDateTime.now());
+
+        return repo.save(existing);
     }
 }
