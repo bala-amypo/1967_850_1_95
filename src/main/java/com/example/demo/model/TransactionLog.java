@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 @Entity
@@ -13,9 +12,7 @@ public class TransactionLog {
     private Long id;
 
     private double amount;
-
     private String description;
-
     private LocalDate transactionDate;
 
     @ManyToOne
@@ -26,7 +23,7 @@ public class TransactionLog {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // ---------- Getters & Setters ----------
+    // Getters & Setters
 
     public Long getId() {
         return id;
