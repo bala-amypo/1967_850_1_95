@@ -13,9 +13,12 @@ public class BudgetSummary {
     private Double totalIncome;
     private Double totalExpense;
     private String status;
+
+    @Column(nullable = false)
     private LocalDateTime generatedAt;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "budget_plan_id")
     private BudgetPlan budgetPlan;
 
     // ✅ Getters & Setters
