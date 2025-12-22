@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.BudgetSummary;
 import com.example.demo.service.BudgetSummaryService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,5 +17,11 @@ public class BudgetSummaryController {
     @GetMapping
     public Object getAll() {
         return service.getAll();
+    }
+
+    // ✅ POST create budget summary
+    @PostMapping
+    public BudgetSummary create(@RequestBody BudgetSummary summary) {
+        return service.create(summary);
     }
 }
