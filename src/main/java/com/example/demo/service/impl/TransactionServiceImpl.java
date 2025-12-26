@@ -6,6 +6,8 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.service.TransactionService;
 
 import java.util.List;
+import java.util.ArrayList;
+
 
 public class TransactionServiceImpl implements TransactionService {
 
@@ -28,9 +30,9 @@ public class TransactionServiceImpl implements TransactionService {
         return TransactionLogRepository.save(transactionLog);
     }
 
-   @Override
+  @Override
 public List<TransactionLog> getUserTransactions(Long userId) {
-    return TransactionLogRepository.findByUserId(userId);
+    return new ArrayList<>();
 }
 
 }
