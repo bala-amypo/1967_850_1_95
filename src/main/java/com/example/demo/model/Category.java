@@ -17,6 +17,9 @@ public class Category {
         this.name = name;
         this.type = type;
     }
+public void setId(Long id) {
+    this.id = id;
+}
 
     public void validateType() {
         if (!TYPE_INCOME.equals(type) && !TYPE_EXPENSE.equals(type)) {
