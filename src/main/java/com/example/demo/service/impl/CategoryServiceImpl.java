@@ -1,24 +1,31 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.Category;
+import com.example.demo.repository.CategoryRepository;
 import com.example.demo.service.CategoryService;
-import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
-@Service
 public class CategoryServiceImpl implements CategoryService {
+
+    private CategoryRepository categoryRepository;
+
+    // REQUIRED by tests
+    public CategoryServiceImpl() {
+    }
+
+    // OPTIONAL for Spring
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     @Override
     public Category addCategory(Category category) {
-        // stub implementation
-        return category;
+        return categoryRepository.save(category);
     }
 
     @Override
     public List<Category> getAllCategories() {
-        // stub implementation
-        return Collections.emptyList();
+        return categoryRepository.findAll();
     }
 }
