@@ -28,8 +28,9 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionLogRepository.save(transactionLog);
     }
 
-    @Override
-    public List<TransactionLog> getUserTransactions(Long userId) {
-        return transactionLogRepository.findAll();
-    }
+   @Override
+public List<TransactionLog> getUserTransactions(Long userId) {
+    return transactionLogRepository.findByUserId(userId);
+}
+
 }
