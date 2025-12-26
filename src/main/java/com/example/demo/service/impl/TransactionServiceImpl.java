@@ -1,24 +1,35 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.TransactionLog;
+import com.example.demo.repository.TransactionLogRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.TransactionService;
-import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
-@Service
 public class TransactionServiceImpl implements TransactionService {
+
+    private TransactionLogRepository transactionLogRepository;
+    private UserRepository userRepository;
+
+    // REQUIRED by tests
+    public TransactionServiceImpl() {
+    }
+
+    // OPTIONAL for Spring
+    public TransactionServiceImpl(TransactionLogRepository transactionLogRepository,
+                                  UserRepository userRepository) {
+        this.transactionLogRepository = transactionLogRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public TransactionLog addTransaction(Long userId, TransactionLog transactionLog) {
-        // stub implementation
-        return transactionLog;
+        return transactionLogRepository.save(transactionLog);
     }
 
     @Override
     public List<TransactionLog> getUserTransactions(Long userId) {
-        // stub implementation
-        return Collections.emptyList();
+        return transactionLogRepository.findAll();
     }
 }
