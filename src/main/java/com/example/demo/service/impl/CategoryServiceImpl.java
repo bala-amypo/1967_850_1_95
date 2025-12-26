@@ -11,8 +11,14 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
     @Override
+    public Category addCategory(Category category) {
+        // stub implementation
+        return category;
+    }
+
+    @Override
     public List<Category> getAllCategories() {
-        // minimal stub
+        // stub implementation
         return Collections.emptyList();
     }
 }
