@@ -1,12 +1,12 @@
 package com.example.demo;
 
-/**
- * Stub application class.
- * Spring Boot is NOT required for TestNG-based unit tests.
- */
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
 public class DemoApplication {
 
     public static void main(String[] args) {
-        // Intentionally empty
+        SpringApplication.run(DemoApplication.class, args);
     }
 }
