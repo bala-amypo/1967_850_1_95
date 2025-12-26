@@ -9,7 +9,7 @@ import java.util.List;
 
 public class TransactionServiceImpl implements TransactionService {
 
-    private TransactionLogRepository transactionLogRepository;
+    private TransactionLogRepository TransactionLogRepository;
     private UserRepository userRepository;
 
     // REQUIRED by tests
@@ -19,18 +19,18 @@ public class TransactionServiceImpl implements TransactionService {
     // OPTIONAL for Spring
     public TransactionServiceImpl(TransactionLogRepository transactionLogRepository,
                                   UserRepository userRepository) {
-        this.transactionLogRepository = transactionLogRepository;
+        this.TransactionLogRepository = TransactionLogRepository;
         this.userRepository = userRepository;
     }
 
     @Override
     public TransactionLog addTransaction(Long userId, TransactionLog transactionLog) {
-        return transactionLogRepository.save(transactionLog);
+        return TransactionLogRepository.save(transactionLog);
     }
 
    @Override
 public List<TransactionLog> getUserTransactions(Long userId) {
-    return transactionLogRepository.findByUserId(userId);
+    return TransactionLogRepository.findByUserId(userId);
 }
 
 }
