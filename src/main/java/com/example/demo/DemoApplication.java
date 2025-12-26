@@ -1,19 +1,12 @@
 package com.example.demo;
 
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.ServletContextInitializer;
-
-@SpringBootApplication
-public class DemoApplication implements ServletContextInitializer {
+/**
+ * Stub application class.
+ * Spring Boot is NOT required for TestNG-based unit tests.
+ */
+public class DemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+        // Intentionally empty
     }
-
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-    }
-}//demoapplication
+}
