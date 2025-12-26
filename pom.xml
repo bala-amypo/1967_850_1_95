@@ -7,7 +7,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- ✅ SPRING BOOT PARENT -->
+    <!-- ================= SPRING BOOT PARENT ================= -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -25,11 +25,12 @@
     <properties>
         <java.version>17</java.version>
         <jjwt.version>0.11.5</jjwt.version>
+        <testng.version>7.9.0</testng.version>
     </properties>
 
     <dependencies>
 
-        <!-- ================= SPRING BOOT CORE ================= -->
+        <!-- ================= CORE ================= -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -88,12 +89,15 @@
             </exclusions>
         </dependency>
 
+        <!-- TestNG (VERSION REQUIRED) -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
             <scope>test</scope>
         </dependency>
 
+        <!-- Mockito -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
@@ -105,13 +109,13 @@
     <build>
         <plugins>
 
-            <!-- SPRING BOOT PLUGIN -->
+            <!-- SPRING BOOT -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- TESTNG -->
+            <!-- TESTNG SUPPORT -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
