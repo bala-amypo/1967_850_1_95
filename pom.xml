@@ -33,43 +33,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-<!-- Spring Boot Security Starter -->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-security</artifactId>
-</dependency>
-
-<!-- JWT dependencies (already mentioned) -->
-<dependency>
-    <groupId>io.jsonwebtoken</groupId>
-    <artifactId>jjwt-api</artifactId>
-    <version>0.11.5</version>
-</dependency>
-<dependency>
-    <groupId>io.jsonwebtoken</groupId>
-    <artifactId>jjwt-impl</artifactId>
-    <version>0.11.5</version>
-    <scope>runtime</scope>
-</dependency>
-<dependency>
-    <groupId>io.jsonwebtoken</groupId>
-    <artifactId>jjwt-jackson</artifactId>
-    <version>0.11.5</version>
-    <scope>runtime</scope>
-</dependency>
-
-<!-- Jakarta annotations for @PostConstruct -->
-<dependency>
-    <groupId>jakarta.annotation</groupId>
-    <artifactId>jakarta.annotation-api</artifactId>
-    <version>2.1.1</version>
-</dependency>
-<properties>
-    <java.version>17</java.version>
-</properties>
-
-
+    </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
