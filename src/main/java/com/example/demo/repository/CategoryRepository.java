@@ -1,10 +1,12 @@
 package com.example.demo.repository;
 
-import java.util.*;
 import com.example.demo.model.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
 
-public interface CategoryRepository {
+@Repository
+public interface CategoryRepository extends JpaRepository<Category, Long> {
     boolean existsByName(String name);
-    Category save(Category category);
     List<Category> findAll();
 }
