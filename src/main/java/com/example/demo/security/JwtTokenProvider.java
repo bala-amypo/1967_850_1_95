@@ -12,18 +12,18 @@ public class JwtTokenProvider {
     private final Key key;
     private final long expiry;
 
-    public JwtTokenProvider(String secret, long exp) {
+    public JwtTokenProvider(String secret, long expiry) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
-        this.expiry = exp;
+        this.expiry = expiry;
     }
 
     public String generateToken(Authentication auth, Long id,
                                 String email, String role) {
         return Jwts.builder()
+                .setSubject(id.toString())
                 .claim("userId", id)
                 .claim("email", email)
                 .claim("role", role)
-                .setSubject(id.toString())
                 .setExpiration(new Date(System.currentTimeMillis() + expiry))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
@@ -41,9 +41,9 @@ public class JwtTokenProvider {
     public Long getUserIdFromToken(String token) {
         Claims c = Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token).getBody();
-        return c.get("userId", Long.class) != null ?
-                c.get("userId", Long.class) :
-                Long.valueOf(c.getSubject());
+        return c.get("userId", Long.class) != null
+                ? c.get("userId", Long.class)
+                : Long.valueOf(c.getSubject());
     }
 
     public String getEmailFromToken(String token) {
