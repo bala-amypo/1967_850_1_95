@@ -22,7 +22,7 @@ public class BudgetPlan {
     private Double incomeTarget;
 
     private Double expenseLimit;
-
+@com.fasterxml.jackson.annotation.JsonIgnore
     @OneToOne(mappedBy = "budgetPlan")
     private BudgetSummary budgetSummary;
 
