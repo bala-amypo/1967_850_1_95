@@ -2,45 +2,58 @@ package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 
 import java.util.List;
-
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    @Bean
-public AuthenticationManager authenticationManager() {
-    // Empty provider list – authentication is effectively disabled
-    return new ProviderManager(List.of());
-}
 
+    private final UserDetailsService userDetailsService;
+
+    public SecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    // ---------------- SecurityFilterChain ----------------
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http
-            // Disable everything that causes login
-            .csrf(csrf -> csrf.disable())
-            .formLogin(form -> form.disable())
-            .httpBasic(basic -> basic.disable())
-            .logout(logout -> logout.disable())
-
-            // No sessions (important for tests)
+            .csrf(csrf -> csrf.disable())          // disable CSRF
+            .formLogin(form -> form.disable())     // disable login page
+            .httpBasic(basic -> basic.disable())   // disable basic auth popup
+            .logout(logout -> logout.disable())    // disable logout endpoint
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-
-            // Allow ALL requests (tests + swagger + APIs)
-            .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll()
+            .authorizeHttpRequests(auth ->
+                auth.anyRequest().permitAll()      // allow all requests
             );
 
         return http.build();
+    }
+
+    // ---------------- Password Encoder ----------------
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    // ---------------- Minimal AuthenticationManager ----------------
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return new org.springframework.security.authentication.ProviderManager(List.of(provider));
     }
 }
