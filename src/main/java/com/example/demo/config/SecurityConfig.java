@@ -10,6 +10,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Bean
+public AuthenticationManager authenticationManager() {
+    // Empty provider list – authentication is effectively disabled
+    return new ProviderManager(List.of());
+}
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
