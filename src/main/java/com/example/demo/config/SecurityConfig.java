@@ -3,7 +3,6 @@ package com.example.demo.config;
 import com.example.demo.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -15,15 +14,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final AuthenticationProvider authenticationProvider;
 
-    // ✅ Explicit constructor (NO Lombok)
-    public SecurityConfig(
-            JwtAuthenticationFilter jwtAuthenticationFilter,
-            AuthenticationProvider authenticationProvider
-    ) {
+    // ✅ Constructor WITHOUT AuthenticationProvider
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.authenticationProvider = authenticationProvider;
     }
 
     @Bean
@@ -33,14 +27,14 @@ public class SecurityConfig {
             // Disable CSRF
             .csrf(csrf -> csrf.disable())
 
-            // ❌ Disable login page completely
+            // ❌ Disable login page & basic auth
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable())
 
             // Authorization rules
             .authorizeHttpRequests(auth -> auth
 
-                // ✅ Allow Swagger without login
+                // ✅ Swagger should open directly
                 .requestMatchers(
                         "/swagger-ui/**",
                         "/swagger-ui.html",
@@ -54,13 +48,10 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
 
-            // JWT is stateless
+            // Stateless session (JWT)
             .sessionManagement(session ->
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-
-            // Authentication provider
-            .authenticationProvider(authenticationProvider)
 
             // JWT filter
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
