@@ -8,6 +8,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import java.util.List;
 
 @Configuration
@@ -15,9 +16,13 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
+
         final String securitySchemeName = "bearerAuth";
+
         return new OpenAPI()
-                .info(new Info().title("Personal Finance API").version("1.0"))
+                .info(new Info()
+                        .title("Personal Finance API")
+                        .version("1.0"))
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(new Components()
                         .addSecuritySchemes(securitySchemeName,
@@ -26,9 +31,9 @@ public class SwaggerConfig {
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
                                         .bearerFormat("JWT")))
-                // You need to change the port as per your server - already changed
                 .servers(List.of(
-                        new Server().url("https://9189.408procr.amypo.ai")
+                        // ✅ Server URL merged from OpenApiConfig
+                        new Server().url("https://9268.408procr.amypo.ai/")
                 ));
     }
 }
