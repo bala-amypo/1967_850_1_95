@@ -3,6 +3,8 @@ package com.example.demo.config;
 import com.example.demo.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -15,9 +17,16 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    // ✅ Constructor WITHOUT AuthenticationProvider
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
+
+    // ✅ REQUIRED by AuthController
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration
+    ) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
@@ -27,28 +36,28 @@ public class SecurityConfig {
             // Disable CSRF
             .csrf(csrf -> csrf.disable())
 
-            // ❌ Disable login page & basic auth
+            // ❌ Disable login page completely
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable())
 
-            // Authorization rules
+            // Authorization
             .authorizeHttpRequests(auth -> auth
 
-                // ✅ Swagger should open directly
+                // ✅ Swagger direct access
                 .requestMatchers(
                         "/swagger-ui/**",
                         "/swagger-ui.html",
                         "/v3/api-docs/**"
                 ).permitAll()
 
-                // Auth APIs allowed
+                // Auth endpoints public
                 .requestMatchers("/api/auth/**").permitAll()
 
                 // Everything else secured
                 .anyRequest().authenticated()
             )
 
-            // Stateless session (JWT)
+            // Stateless JWT
             .sessionManagement(session ->
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
