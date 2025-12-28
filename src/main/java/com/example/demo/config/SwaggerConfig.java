@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Primary;
 import java.util.List;
 
 @Configuration
-public class OpenApiConfig {
+public class SwaggerConfig {
 
     @Bean(name = "baseOpenAPI")
     @Primary
