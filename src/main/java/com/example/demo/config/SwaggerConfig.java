@@ -5,21 +5,18 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
 
-    @Bean
-    public OpenAPI customOpenAPI() {
+    @Bean(name = "securedOpenAPI")
+    public OpenAPI securedOpenAPI(OpenAPI baseOpenAPI) {
 
         final String securitySchemeName = "bearerAuth";
 
-        return new OpenAPI()
+        return baseOpenAPI
                 .info(new Info()
                         .title("Personal Finance API")
                         .version("1.0"))
@@ -30,10 +27,6 @@ public class SwaggerConfig {
                                         .name(securitySchemeName)
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
-                                        .bearerFormat("JWT")))
-                .servers(List.of(
-                        // ✅ Server URL merged from OpenApiConfig
-                        new Server().url("https://9268.408procr.amypo.ai/")
-                ));
+                                        .bearerFormat("JWT")));
     }
 }
