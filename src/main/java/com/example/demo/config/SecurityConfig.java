@@ -1,6 +1,6 @@
-package com.example.demo.security;
+package com.example.demo.config;
 
-import lombok.RequiredArgsConstructor;
+import com.example.demo.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -12,41 +12,49 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
 
+    // ✅ Explicit constructor (NO Lombok)
+    public SecurityConfig(
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            AuthenticationProvider authenticationProvider
+    ) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.authenticationProvider = authenticationProvider;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            // Disable CSRF (required for Swagger & JWT)
+            // Disable CSRF
             .csrf(csrf -> csrf.disable())
 
-            // ❌ REMOVE LOGIN PAGE COMPLETELY
+            // ❌ Disable login page completely
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable())
 
             // Authorization rules
             .authorizeHttpRequests(auth -> auth
 
-                // ✅ Swagger must be public
+                // ✅ Allow Swagger without login
                 .requestMatchers(
                         "/swagger-ui/**",
                         "/swagger-ui.html",
                         "/v3/api-docs/**"
                 ).permitAll()
 
-                // Auth APIs remain public
+                // Auth APIs allowed
                 .requestMatchers("/api/auth/**").permitAll()
 
                 // Everything else secured
                 .anyRequest().authenticated()
             )
 
-            // Stateless session (JWT)
+            // JWT is stateless
             .sessionManagement(session ->
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
@@ -54,7 +62,7 @@ public class SecurityConfig {
             // Authentication provider
             .authenticationProvider(authenticationProvider)
 
-            // JWT Filter
+            // JWT filter
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
