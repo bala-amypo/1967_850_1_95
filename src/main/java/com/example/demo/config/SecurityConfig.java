@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -29,6 +31,12 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    // ✅ REQUIRED by UserServiceImpl
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -36,21 +44,21 @@ public class SecurityConfig {
             // Disable CSRF
             .csrf(csrf -> csrf.disable())
 
-            // ❌ Disable login page completely
+            // Disable login & basic auth
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable())
 
-            // Authorization
+            // Authorization rules
             .authorizeHttpRequests(auth -> auth
 
-                // ✅ Swagger direct access
+                // Swagger direct access
                 .requestMatchers(
                         "/swagger-ui/**",
                         "/swagger-ui.html",
                         "/v3/api-docs/**"
                 ).permitAll()
 
-                // Auth endpoints public
+                // Auth APIs public
                 .requestMatchers("/api/auth/**").permitAll()
 
                 // Everything else secured
